@@ -60,4 +60,15 @@ PatientRouter.put("/:id", async (req, res) => {
   }
 });
 
+// @route DELETE patients/:id
+// @desc delete an existing patient
+PatientRouter.delete("/:id", async (req, res) => {
+  try {
+    let deletedPatient = await Patient.findByIdAndDelete(req.params.id);
+    res.send(deletedPatient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = PatientRouter;
