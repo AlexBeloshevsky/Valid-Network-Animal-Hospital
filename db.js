@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
+const Patient = require("./models/Patient");
 const dbName = process.env.NODE_ENV === "test" ? "test" : "validNetwork";
 
 console.log("dbNAME:" + dbName);
 
 const deleteDb = () => {
-  return;
+  return Promise.all([Patient.remove({})]);
 };
 
 const db = mongoose
   .connect(`mongodb://localhost:27017/${dbName}`, {
-    autoReconnect: true,
-    reconnectTries: 60,
-    reconnectInterval: 10000
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   })
   .then(
     () => {
