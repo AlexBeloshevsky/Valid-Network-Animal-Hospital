@@ -90,4 +90,15 @@ PatientRouter.post("/appointments/:id", async (req, res) => {
   }
 });
 
+// @route GET patients/appointments/:id
+// @desc get all appointments for a specific patient
+PatientRouter.get("/appointments/:id", async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    res.send(patient.appointments);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = PatientRouter;
