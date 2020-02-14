@@ -10,7 +10,8 @@ const Patient = new mongoose.Schema({
       startTime: Date,
       endTime: Date,
       description: String,
-      feePaid: Boolean
+      feePaid: Boolean,
+      cost: Number
     }
   ]
 });

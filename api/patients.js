@@ -78,7 +78,8 @@ PatientRouter.post("/appointments/:id", async (req, res) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
     description: req.body.description,
-    feePaid: req.body.feePaid
+    feePaid: req.body.feePaid,
+    cost: req.body.cost
   };
   try {
     const patient = await Patient.findById(req.params.id);
@@ -135,6 +136,24 @@ PatientRouter.delete("/appointments/:id/:apt_id", async (req, res) => {
     updatedPatient.appointments = appointmentsArray;
     await updatedPatient.save();
     res.send(updatedPatient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route GET /unpaid/:id
+// @desc get the total unpaid amount for a specific patient.
+PatientRouter.get("/unpaid/:id", async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    let sum = 0;
+    let unpaidAppointments = patient.appointments.filter(appointment => {
+      return appointment.feePaid == false;
+    });
+    unpaidAppointments.forEach(appointment => {
+      sum += appointment.cost;
+    });
+    res.send(sum.toString());
   } catch (err) {
     res.status(500).send("Server Error");
   }
