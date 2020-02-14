@@ -1,6 +1,7 @@
 const request = require("supertest");
 const db = require("../../db");
 const app = require("../../app");
+const expect = require("chai").expect;
 
 describe("POST /patients/create", function() {
   beforeEach(() => {
@@ -41,6 +42,22 @@ describe("POST /patients/create", function() {
       .end(function(err, res) {
         if (err) return done(err);
         done();
+      });
+  });
+});
+
+describe("GET /patients/all", function() {
+  beforeEach(() => {
+    return db.deleteDb();
+  });
+  it("returns an empty list of Patients", function() {
+    return request(app)
+      .get("/patients/all")
+      .expect(200)
+      .expect("Content-Type", /json/)
+      .then(docs => {
+        expect(Array.isArray(docs.body)).to.be.equal(true);
+        expect(docs.body.length).to.be.equal(0);
       });
   });
 });

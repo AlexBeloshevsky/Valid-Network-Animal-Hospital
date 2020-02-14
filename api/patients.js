@@ -2,6 +2,9 @@ const express = require("express");
 const PatientRouter = express.Router();
 const Patient = require("../models/Patient");
 
+//@route POST patients/create
+//@desc create a new Patient
+
 PatientRouter.post("/create", function(req, res) {
   const patient = new Patient({
     petName: req.body.petName,
@@ -24,6 +27,17 @@ PatientRouter.post("/create", function(req, res) {
       }
       res.status(400).send(err);
     });
+});
+
+// @route GET patients/
+// @desc get all Patients
+PatientRouter.get("/all", async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    res.json(patients);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = PatientRouter;
