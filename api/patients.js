@@ -40,4 +40,24 @@ PatientRouter.get("/all", async (req, res) => {
   }
 });
 
+// @route PUT patients/:id
+// @desc change the details of an existing patient
+PatientRouter.put("/:id", async (req, res) => {
+  try {
+    let newPatient = await Patient.findByIdAndUpdate(
+      req.params.id,
+      {
+        petName: req.body.petName,
+        petType: req.body.petType,
+        ownerName: req.body.ownerName,
+        ownerPhoneNumber: req.body.ownerPhoneNumber
+      },
+      { new: true }
+    );
+    res.send(newPatient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = PatientRouter;

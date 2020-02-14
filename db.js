@@ -11,7 +11,8 @@ const deleteDb = () => {
 const db = mongoose
   .connect(`mongodb://localhost:27017/${dbName}`, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(
     () => {
