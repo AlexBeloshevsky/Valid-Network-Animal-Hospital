@@ -15,7 +15,7 @@ PatientRouter.post("/create", function(req, res) {
   patient
     .save()
     .then(() => {
-      res.json("Patient added successfully");
+      res.json(patient);
     })
     .catch(err => {
       if (err.name === "ValidationError") {
