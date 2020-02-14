@@ -71,4 +71,23 @@ PatientRouter.delete("/:id", async (req, res) => {
   }
 });
 
+// @route POST patients/appointments/:id
+// @desc add an appointment to a specific patient
+PatientRouter.post("/appointments/:id", async (req, res) => {
+  let newAppointment = {
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    description: req.body.description,
+    feePaid: req.body.feePaid
+  };
+  try {
+    const patient = await Patient.findById(req.params.id);
+    patient.appointments.push(newAppointment);
+    await patient.save();
+    res.json(patient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = PatientRouter;
