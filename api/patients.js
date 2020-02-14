@@ -101,4 +101,43 @@ PatientRouter.get("/appointments/:id", async (req, res) => {
   }
 });
 
+// @route PUT /appointments/:id/:apt_id
+// @desc change the details of an existing patient's specific appointment
+PatientRouter.put("/appointments/:id/:apt_id", async (req, res) => {
+  let newAppointment = {
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    description: req.body.description,
+    feePaid: req.body.feePaid
+  };
+  try {
+    let updatedPatient = await Patient.findById(req.params.id);
+    let appointmentsArray = updatedPatient.appointments.filter(appointment => {
+      return appointment._id != req.params.apt_id;
+    });
+    appointmentsArray.push(newAppointment);
+    updatedPatient.appointments = appointmentsArray;
+    await updatedPatient.save();
+    res.send(updatedPatient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route DELETE /appointments/:id/:apt_id
+// @desc delete an existing patient's specific appointment
+PatientRouter.delete("/appointments/:id/:apt_id", async (req, res) => {
+  try {
+    let updatedPatient = await Patient.findById(req.params.id);
+    let appointmentsArray = updatedPatient.appointments.filter(appointment => {
+      return appointment._id != req.params.apt_id;
+    });
+    updatedPatient.appointments = appointmentsArray;
+    await updatedPatient.save();
+    res.send(updatedPatient);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = PatientRouter;
