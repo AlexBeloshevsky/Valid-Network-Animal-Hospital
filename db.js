@@ -5,7 +5,7 @@ const dbName = process.env.NODE_ENV === "test" ? "test" : "validNetwork";
 console.log("dbNAME:" + dbName);
 
 const deleteDb = () => {
-  return Promise.all([Patient.remove({})]);
+  return Promise.all([Patient.deleteOne({})]);
 };
 
 const db = mongoose

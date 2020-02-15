@@ -109,7 +109,8 @@ PatientRouter.put("/appointments/:id/:apt_id", async (req, res) => {
     startTime: req.body.startTime,
     endTime: req.body.endTime,
     description: req.body.description,
-    feePaid: req.body.feePaid
+    feePaid: req.body.feePaid,
+    cost: req.body.cost
   };
   try {
     let updatedPatient = await Patient.findById(req.params.id);
@@ -153,10 +154,14 @@ PatientRouter.get("/unpaid/:id", async (req, res) => {
     unpaidAppointments.forEach(appointment => {
       sum += appointment.cost;
     });
-    res.send(sum.toString());
+    res.send({ sum });
   } catch (err) {
     res.status(500).send("Server Error");
   }
 });
+
+// @route GET /unpaid
+// @desc get a list of all unpaid appointments
+// get everything and then iterate over everything and look for appointments that are unpaid
 
 module.exports = PatientRouter;
