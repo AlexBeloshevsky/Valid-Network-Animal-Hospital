@@ -10,10 +10,50 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.0/knockout-min.js"
     ></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <p>First name: <strong>todo</strong></p>
-    <p>Last name: <strong>todo</strong></p>
+    <h1>Welcome To The Pet Hospital!</h1>
+    <h2>Do you want to add a new patient?</h2>
+    <p>Pet Name: <input data-bind="value: petNameForInsert" /></p>
+    <p>Pet Type: <input data-bind="value: petTypeForInsert" /></p>
+    <p>Owner Name: <input data-bind="value: ownerNameForInsert" /></p>
+    <p>
+      Owner Phone Number: <input data-bind="value: ownerPhoneNumberForInsert" />
+    </p>
+    <button data-bind="click: addPatientToDB">
+      perform a POST request - add the patient to the database
+    </button>
+    <h2>Let's get all the existing data in the database, shall we?</h2>
+    <button data-bind="click: getDataForAllPatients">
+      perform a GET request
+    </button>
+    <p>If there's data in the database it will be displayed here:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Pet Name</th>
+          <th>Pet Type</th>
+          <th>Owner Name</th>
+          <th>Owner Phone Number</th>
+          <th>Database ID</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: allData">
+        <tr>
+          <td data-bind="text: $data.petName"></td>
+          <td data-bind="text: $data.petType"></td>
+          <td data-bind="text: $data.ownerName"></td>
+          <td data-bind="text: $data.ownerPhoneNumber"></td>
+          <td data-bind="text: $data._id"></td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <ul data-bind="foreach: allData">
+      <li>
+        pet name:<span data-bind="text: $data.petName"> | pet type: <span data-bind="text: $data.petType"> | owner name: <span data-bind="text: $data.ownerName"> | owner phone number: <span data-bind="text: $data.ownerPhoneNumber"></span>
+      </li>
+    </ul> -->
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

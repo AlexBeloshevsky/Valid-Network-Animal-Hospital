@@ -1,0 +1,14 @@
+body {
+  margin: 0 10%;
+}
+th,
+td {
+  padding: 25px;
+  border-bottom: 2px solid black;
+}
+
+h1,
+h2 {
+  text-align: center;
+  padding-bottom: 50px;
+}

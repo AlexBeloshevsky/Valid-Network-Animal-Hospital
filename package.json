@@ -4,8 +4,8 @@
   "description": "A pet hospital CRUD written in node, express, mongoDB and knockout",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
-    "dev": "nodemon app",
+    "start": "concurrently \"node app\" \"start http://localhost:3000/ \"",
+    "dev": "concurrently \"nodemon app\" \"start http://localhost:3000/ \"",
     "test": "cross-env NODE_ENV=test mocha --recursive --exit --timeout 10000"
   },
   "author": "Alex Beloshevsky",
@@ -18,10 +18,10 @@
     "mocha": "^7.0.1",
     "mongodb": "^3.5.3",
     "mongoose": "^5.8.13",
+    "concurrently": "^5.1.0",
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "concurrently": "^5.1.0",
     "nodemon": "^2.0.2"
   }
 }
