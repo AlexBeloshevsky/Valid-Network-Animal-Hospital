@@ -341,3 +341,69 @@ describe("GET /patients/unpaid/:id", function() {
     expect(docs.body.sum).to.be.equal(10);
   });
 });
+
+describe("GET /patients/unpaid/", function() {
+  beforeEach(() => {
+    return db.deleteDb();
+  });
+  it("returns all the unpaid appointments", async function() {
+    await request(app)
+      .post("/patients/create")
+      .send({
+        petName: "Blackie",
+        petType: "Dog",
+        ownerName: "Alex Beloshevsky",
+        ownerPhoneNumber: "0506678419"
+      });
+
+    let docs = await request(app)
+      .get("/patients/all")
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    await request(app)
+      .post("/patients/appointments/" + docs.body[0]._id)
+      .send({
+        startTime: "2016-05-18T16:00:00.000Z",
+        endTime: "2016-05-18T18:00:00.000Z",
+        description: "test appointment",
+        feePaid: false,
+        cost: 10
+      })
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    await request(app)
+      .post("/patients/create")
+      .send({
+        petName: "Shmulik",
+        petType: "Cat",
+        ownerName: "Alex Beloshevsky",
+        ownerPhoneNumber: "0506678419"
+      });
+
+    docs = await request(app)
+      .get("/patients/all")
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    await request(app)
+      .post("/patients/appointments/" + docs.body[0]._id)
+      .send({
+        startTime: "2016-05-18T16:00:00.000Z",
+        endTime: "2016-05-18T18:00:00.000Z",
+        description: "test appointment",
+        feePaid: false,
+        cost: 5
+      })
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    docs = await request(app)
+      .get("/patients/unpaid/")
+      .expect(200);
+
+    expect(Array.isArray(docs.body)).to.be.equal(true);
+    expect(docs.body.length).to.be.equal(2);
+  });
+});

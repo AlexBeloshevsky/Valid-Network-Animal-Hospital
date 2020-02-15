@@ -162,6 +162,21 @@ PatientRouter.get("/unpaid/:id", async (req, res) => {
 
 // @route GET /unpaid
 // @desc get a list of all unpaid appointments
-// get everything and then iterate over everything and look for appointments that are unpaid
+PatientRouter.get("/unpaid", async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    let unpaidAppointments = [];
+    patients.forEach(patient => {
+      patient.appointments.filter(appointment => {
+        if (appointment.feePaid == false) {
+          unpaidAppointments.push(appointment);
+        }
+      });
+    });
+    res.json(unpaidAppointments);
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = PatientRouter;
