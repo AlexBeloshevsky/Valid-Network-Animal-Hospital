@@ -214,6 +214,34 @@
         </tbody>
       </table>
     </section>
+    <section>
+      <h2>Do you want to get a list of all unpaid appointments?</h2>
+      <button data-bind="click: findUnpaidAppointments">
+        Find Unpaid All Appointments
+      </button>
+      <table>
+        <thead>
+          <tr>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Description</th>
+            <th>Already Paid?</th>
+            <th>Price</th>
+            <th>Appointment ID</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: unpaidAppointments">
+          <tr>
+            <td data-bind="text: $data.startTime"></td>
+            <td data-bind="text: $data.endTime"></td>
+            <td data-bind="text: $data.description"></td>
+            <td data-bind="text: $data.feePaid"></td>
+            <td data-bind="text: $data.cost"></td>
+            <td data-bind="text: $data._id"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
     <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
 
     <script type="text/javascript" src="main.js"></script>

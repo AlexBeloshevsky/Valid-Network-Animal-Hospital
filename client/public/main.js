@@ -34,6 +34,8 @@ function AppViewModel() {
     .observableArray([])
     .extend({ deferred: true });
 
+  this.unpaidAppointments = ko.observableArray([]).extend({ deferred: true });
+
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
     this.allData(response.data);
@@ -133,6 +135,11 @@ function AppViewModel() {
       "/patients/appointments/?date=" + this.appointmentDate()
     );
     this.specificDateAppointments(response.data);
+  };
+
+  this.findUnpaidAppointments = async function() {
+    const response = await axios.get("/patients/unpaid");
+    this.unpaidAppointments(response.data);
   };
 }
 
