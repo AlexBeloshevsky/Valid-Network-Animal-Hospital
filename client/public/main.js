@@ -12,6 +12,11 @@ function AppViewModel() {
   this.ownerNameForUpdate = ko.observable("");
   this.ownerPhoneNumberForUpdate = ko.observable("");
 
+  this.dbIDForScheduling = ko.observable("");
+  this.startTimeForScheduling = ko.observable("2020-02-16T16:00:00Z");
+  this.endTimeForScheduling = ko.observable("2020-02-16T17:00:00Z");
+  this.descriptionForScheduling = ko.observable("");
+
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
     this.allData(response.data);
@@ -24,9 +29,6 @@ function AppViewModel() {
         petType: this.petTypeForInsert(),
         ownerName: this.ownerNameForInsert(),
         ownerPhoneNumber: this.ownerPhoneNumberForInsert()
-      })
-      .then(function(response) {
-        console.log(response);
       })
       .catch(function(error) {
         console.log(error);
@@ -49,6 +51,19 @@ function AppViewModel() {
       petType: this.petTypeForUpdate(),
       ownerName: this.ownerNameForUpdate(),
       ownerPhoneNumber: this.ownerPhoneNumberForUpdate()
+    });
+  };
+  this.deletePatientFromDB = async function() {
+    axios.delete("/patients/" + this.dbIDForUpdate());
+  };
+
+  this.addAppointmentToPatient = async function() {
+    axios.post("/patients/appointments/" + this.dbIDForScheduling(), {
+      startTime: this.startTimeForScheduling(),
+      endTime: this.endTimeForScheduling(),
+      description: this.descriptionForScheduling(),
+      feePaid: false,
+      cost: 10
     });
   };
 }

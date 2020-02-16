@@ -49,7 +49,10 @@
         </tr>
       </tbody>
     </table>
-    <h2>Do you want to update the details of an existing patient?</h2>
+    <h2>
+      Do you want to update the details of an existing patient? Or perhaps
+      delete an existing patient from the database?
+    </h2>
     <p>If so, enter their Database ID and change the details as you see fit.</p>
     <p>
       Database ID:
@@ -57,6 +60,11 @@
     </p>
     <button data-bind="click: findPatient">
       Find patient data
+    </button>
+    <button
+      data-bind="click: function() { deletePatientFromDB(); getDataForAllPatients() }"
+    >
+      perform a DELETE request - delete a patient from the database
     </button>
     <p>Pet Name: <input data-bind="value: petNameForUpdate" /></p>
     <p>Pet Type: <input data-bind="value: petTypeForUpdate" /></p>
@@ -69,7 +77,35 @@
     >
       perform a PUT request - change a patient in the database
     </button>
+    <h2>Do you want to add an appointment to an existing patient?</h2>
+    <p>If so, enter their Database ID and create the appointment:</p>
+    <p>
+      Please note that all appointments are set as unpaid and with the standard
+      amount of 10. If you want to pay your bill or schedule a different type of
+      appointment besides the usual check-up, please contact the secretary.
+    </p>
+    <p>
+      Database ID:
+      <input data-bind="value: dbIDForScheduling" />
+    </p>
+    <p>
+      appointment start date and time - please use the following format:
+      <input data-bind="value: startTimeForScheduling" />
+    </p>
+    <p>
+      appointment end date and time - please use the following format:
+      <input data-bind="value: endTimeForScheduling" />
+    </p>
+    <p>
+      Appointment description:<input
+        data-bind="value: descriptionForScheduling"
+      />
+    </p>
+    <button data-bind="click: function() { addAppointmentToPatient() }">
+      perform a POST request - add an appointment to a patient
+    </button>
     <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
+
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>
