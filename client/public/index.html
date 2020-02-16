@@ -242,8 +242,23 @@
         </tbody>
       </table>
     </section>
-    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
-
+    <section>
+      <h2>
+        Last but not least - Do you want to see the unpaid balance for a
+        specific user?
+      </h2>
+      <p>
+        Enter patient database ID:
+        <input data-bind="value: patientUnpaidID" />
+      </p>
+      <button data-bind="click: findUnpaidBalanceForPatient">
+        Find patient unpaid balance
+      </button>
+      <p>
+        The patient with the ID you entered has an unpaid balance of:
+        <span data-bind="text: patientUnpaidBalance"></span>
+      </p>
+    </section>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

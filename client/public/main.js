@@ -34,6 +34,9 @@ function AppViewModel() {
     .observableArray([])
     .extend({ deferred: true });
 
+  this.patientUnpaidID = ko.observable("");
+  this.patientUnpaidBalance = ko.observable("");
+
   this.unpaidAppointments = ko.observableArray([]).extend({ deferred: true });
 
   this.getDataForAllPatients = async function() {
@@ -140,6 +143,13 @@ function AppViewModel() {
   this.findUnpaidAppointments = async function() {
     const response = await axios.get("/patients/unpaid");
     this.unpaidAppointments(response.data);
+  };
+
+  this.findUnpaidBalanceForPatient = async function() {
+    const response = await axios.get(
+      "/patients/unpaid/" + this.patientUnpaidID()
+    );
+    this.patientUnpaidBalance(response.data.sum);
   };
 }
 
