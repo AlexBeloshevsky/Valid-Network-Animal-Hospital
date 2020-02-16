@@ -29,6 +29,11 @@ function AppViewModel() {
   this.paymentStatusForUpdate = ko.observable("");
   this.costForUpdate = ko.observable("");
 
+  this.appointmentDate = ko.observable("2020-02-01");
+  this.specificDateAppointments = ko
+    .observableArray([])
+    .extend({ deferred: true });
+
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
     this.allData(response.data);
@@ -106,6 +111,7 @@ function AppViewModel() {
         this.appointmentIDForUpdate()
     );
   };
+
   this.changeAppointmentInDB = async function() {
     axios.put(
       "/patients/appointments/" +
@@ -120,6 +126,13 @@ function AppViewModel() {
         cost: this.costForUpdate()
       }
     );
+  };
+
+  this.findAppointmentByDate = async function() {
+    const response = await axios.get(
+      "/patients/appointments/?date=" + this.appointmentDate()
+    );
+    this.specificDateAppointments(response.data);
   };
 }
 
