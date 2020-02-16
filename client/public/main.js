@@ -17,6 +17,9 @@ function AppViewModel() {
   this.endTimeForScheduling = ko.observable("2020-02-16T17:00:00Z");
   this.descriptionForScheduling = ko.observable("");
 
+  this.dbIDForGettingAppointments = ko.observable("");
+  this.specificPatientAppointments = ko.observableArray([]);
+
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
     this.allData(response.data);
@@ -65,6 +68,13 @@ function AppViewModel() {
       feePaid: false,
       cost: 10
     });
+  };
+
+  this.getAppointmentDataForPatient = async function() {
+    const response = await axios.get(
+      "/patients/appointments/" + this.dbIDForGettingAppointments()
+    );
+    this.specificPatientAppointments(response.data);
   };
 }
 

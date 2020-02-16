@@ -104,6 +104,66 @@
     <button data-bind="click: function() { addAppointmentToPatient() }">
       perform a POST request - add an appointment to a patient
     </button>
+    <h2>
+      Do you want to get a list of all the appointments for a specific patient?
+    </h2>
+    <p>If so, please enter their database ID here:</p>
+    <p>
+      Database ID:
+      <input data-bind="value: dbIDForGettingAppointments" />
+    </p>
+    <button data-bind="click: getAppointmentDataForPatient">
+      perform a GET request to get all appointments for a specific patient
+    </button>
+    <table>
+      <thead>
+        <tr>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Description</th>
+          <th>Already Paid?</th>
+          <th>Price</th>
+          <th>Appointment ID</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: specificPatientAppointments">
+        <tr>
+          <td data-bind="text: $data.startTime"></td>
+          <td data-bind="text: $data.endTime"></td>
+          <td data-bind="text: $data.description"></td>
+          <td data-bind="text: $data.feePaid"></td>
+          <td data-bind="text: $data.cost"></td>
+          <td data-bind="text: $data._id"></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Do you want to change the details of an appointment or delete it?</h2>
+    <p>
+      If so, please enter the appointment ID here and either update or delete
+      the appointment:
+    </p>
+    <p>
+      Database ID:
+      <input data-bind="value: appointmentIDForUpdate" />
+    </p>
+    <button data-bind="click: findAppointment">
+      Find patient data
+    </button>
+    <button
+      data-bind="click: function() { deleteAppointmentFromDB(); getAppointmentDataForPatient() }"
+    >
+      perform a DELETE request - delete an appointment from the database
+    </button>
+    <p>Start Time: <input data-bind="value: startTimeForUpdate" /></p>
+    <p>End Time: <input data-bind="value: endTimeForUpdate" /></p>
+    <p>Description: <input data-bind="value: descriptionForUpdate" /></p>
+    <p>Already Paid? <input data-bind="value: paymentStatusForUpdate" /></p>
+    <p>Cost <input data-bind="value: costForUpdate" /></p>
+    <button
+      data-bind="click: function() { changeAppointmentInDB(); getAppointmentDataForPatient() }"
+    >
+      perform a PUT request - change an appointment in the database
+    </button>
     <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
 
     <script type="text/javascript" src="main.js"></script>
