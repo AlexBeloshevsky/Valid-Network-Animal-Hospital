@@ -406,6 +406,9 @@ describe("GET /patients/unpaid/", function() {
     expect(Array.isArray(docs.body)).to.be.equal(true);
     expect(docs.body.length).to.be.equal(2);
   });
+  afterEach(() => {
+    return db.deleteDb();
+  });
 });
 
 describe("query appointments", () => {
@@ -460,5 +463,8 @@ describe("query appointments", () => {
     expect(response.body.length).to.be.equal(2);
     expect(response.body[0].description).to.be.equal("test1");
     expect(response.body[1].description).to.be.equal("test2");
+  });
+  after(() => {
+    return db.deleteDb();
   });
 });
