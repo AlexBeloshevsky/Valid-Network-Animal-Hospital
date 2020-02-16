@@ -49,11 +49,27 @@
         </tr>
       </tbody>
     </table>
-    <!-- <ul data-bind="foreach: allData">
-      <li>
-        pet name:<span data-bind="text: $data.petName"> | pet type: <span data-bind="text: $data.petType"> | owner name: <span data-bind="text: $data.ownerName"> | owner phone number: <span data-bind="text: $data.ownerPhoneNumber"></span>
-      </li>
-    </ul> -->
+    <h2>Do you want to update the details of an existing patient?</h2>
+    <p>If so, enter their Database ID and change the details as you see fit.</p>
+    <p>
+      Database ID:
+      <input data-bind="value: dbIDForUpdate" />
+    </p>
+    <button data-bind="click: findPatient">
+      Find patient data
+    </button>
+    <p>Pet Name: <input data-bind="value: petNameForUpdate" /></p>
+    <p>Pet Type: <input data-bind="value: petTypeForUpdate" /></p>
+    <p>Owner Name: <input data-bind="value: ownerNameForUpdate" /></p>
+    <p>
+      Owner Phone Number: <input data-bind="value: ownerPhoneNumberForUpdate" />
+    </p>
+    <button
+      data-bind="click: function() { changePatientInDB(); getDataForAllPatients() }"
+    >
+      perform a PUT request - change a patient in the database
+    </button>
+    <pre data-bind="text: ko.toJSON($data, null, 2)"></pre>
     <script type="text/javascript" src="main.js"></script>
   </body>
 </html>

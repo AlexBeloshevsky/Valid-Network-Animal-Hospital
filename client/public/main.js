@@ -6,6 +6,12 @@ function AppViewModel() {
   this.ownerNameForInsert = ko.observable("");
   this.ownerPhoneNumberForInsert = ko.observable("");
 
+  this.dbIDForUpdate = ko.observable("");
+  this.petNameForUpdate = ko.observable("");
+  this.petTypeForUpdate = ko.observable("");
+  this.ownerNameForUpdate = ko.observable("");
+  this.ownerPhoneNumberForUpdate = ko.observable("");
+
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
     this.allData(response.data);
@@ -25,6 +31,25 @@ function AppViewModel() {
       .catch(function(error) {
         console.log(error);
       });
+  };
+
+  this.findPatient = async function() {
+    var result = this.allData().find(patient => {
+      return patient._id == this.dbIDForUpdate();
+    });
+    this.petNameForUpdate(result.petName);
+    this.petTypeForUpdate(result.petType);
+    this.ownerNameForUpdate(result.ownerName);
+    this.ownerPhoneNumberForUpdate(result.ownerPhoneNumber);
+  };
+
+  this.changePatientInDB = async function() {
+    axios.put("/patients/" + this.dbIDForUpdate(), {
+      petName: this.petNameForUpdate(),
+      petType: this.petTypeForUpdate(),
+      ownerName: this.ownerNameForUpdate(),
+      ownerPhoneNumber: this.ownerPhoneNumberForUpdate()
+    });
   };
 }
 
