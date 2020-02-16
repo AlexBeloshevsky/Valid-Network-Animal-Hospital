@@ -179,4 +179,38 @@ PatientRouter.get("/unpaid", async (req, res) => {
   }
 });
 
+// @route GET patients/appointments/:id
+// @desc get all appointments for a date
+PatientRouter.get("/appointments", async (req, res) => {
+  try {
+    const requestedDate = req.query.date;
+    const requestedDateMilis = Date.parse(requestedDate); // 2020-02-01
+    const startTime = new Date(requestedDateMilis);
+    const dayInMilis = 1000 * 24 * 60 * 60;
+    const endTime = new Date(requestedDateMilis + dayInMilis - 1);
+
+    const patients = await Patient.find({
+      appointments: {
+        $elemMatch: {
+          startTime: { $gte: startTime },
+          endTime: { $lte: endTime }
+        }
+      }
+    });
+
+    const appointmentsArrays = patients.map(patient =>
+      patient.appointments.filter(
+        appointment =>
+          appointment.startTime >= startTime && appointment.endTime <= endTime
+      )
+    );
+
+    const appointments = Array.prototype.concat.apply([], appointmentsArrays);
+
+    res.send(appointments);
+  } catch (err) {
+    res.status(500).send(`Server Error: ${err.message}`);
+  }
+});
+
 module.exports = PatientRouter;

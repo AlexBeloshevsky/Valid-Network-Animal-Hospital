@@ -407,3 +407,58 @@ describe("GET /patients/unpaid/", function() {
     expect(docs.body.length).to.be.equal(2);
   });
 });
+
+describe("query appointments", () => {
+  beforeEach(() => {
+    return db.deleteDb();
+  });
+  const createAppointment = async (
+    petName,
+    ownerName,
+    datePrefix,
+    description
+  ) => {
+    await request(app)
+      .post("/patients/create")
+      .send({
+        petName,
+        petType: "dog",
+        ownerName,
+        ownerPhoneNumber: "0506678419"
+      });
+
+    const response = await request(app)
+      .get("/patients/all")
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    await request(app)
+      .post("/patients/appointments/" + response.body[0]._id)
+      .send({
+        startTime: `${datePrefix}T16:00:00.000Z`,
+        endTime: `${datePrefix}T16:00:00.000Z`,
+        description,
+        feePaid: false,
+        cost: 10
+      })
+      .expect(200)
+      .expect("Content-Type", /json/);
+  };
+
+  it("query by date", async function() {
+    await Promise.all([
+      createAppointment("doggie", "owner", "2020-02-01", "test1"),
+      createAppointment("cattie", "single", "2020-02-01", "test2")
+    ]);
+
+    const response = await request(app)
+      .get("/patients/appointments/?date=2020-02-01")
+      .expect(200)
+      .expect("Content-Type", /json/);
+
+    expect(Array.isArray(response.body)).to.be.equal(true);
+    expect(response.body.length).to.be.equal(2);
+    expect(response.body[0].description).to.be.equal("test1");
+    expect(response.body[1].description).to.be.equal("test2");
+  });
+});
