@@ -1,5 +1,5 @@
 function AppViewModel() {
-  this.allData = ko.observableArray([]);
+  this.allData = ko.observableArray([]).extend({ deferred: true });
 
   this.petNameForInsert = ko.observable("");
   this.petTypeForInsert = ko.observable("");
@@ -18,7 +18,16 @@ function AppViewModel() {
   this.descriptionForScheduling = ko.observable("");
 
   this.dbIDForGettingAppointments = ko.observable("");
-  this.specificPatientAppointments = ko.observableArray([]);
+  this.specificPatientAppointments = ko
+    .observableArray([])
+    .extend({ deferred: true });
+
+  this.appointmentIDForUpdate = ko.observable("");
+  this.startTimeForUpdate = ko.observable("");
+  this.endTimeForUpdate = ko.observable("");
+  this.descriptionForUpdate = ko.observable("");
+  this.paymentStatusForUpdate = ko.observable("");
+  this.costForUpdate = ko.observable("");
 
   this.getDataForAllPatients = async function() {
     const response = await axios.get("/patients/all");
@@ -56,6 +65,7 @@ function AppViewModel() {
       ownerPhoneNumber: this.ownerPhoneNumberForUpdate()
     });
   };
+
   this.deletePatientFromDB = async function() {
     axios.delete("/patients/" + this.dbIDForUpdate());
   };
@@ -75,6 +85,41 @@ function AppViewModel() {
       "/patients/appointments/" + this.dbIDForGettingAppointments()
     );
     this.specificPatientAppointments(response.data);
+  };
+
+  this.findAppointment = async function() {
+    var result = this.specificPatientAppointments().find(appointment => {
+      return appointment._id == this.appointmentIDForUpdate();
+    });
+    this.startTimeForUpdate(result.startTime);
+    this.endTimeForUpdate(result.endTime);
+    this.descriptionForUpdate(result.description);
+    this.paymentStatusForUpdate(result.feePaid);
+    this.costForUpdate(result.cost);
+  };
+
+  this.deleteAppointmentFromDB = async function() {
+    axios.delete(
+      "/patients/appointments/" +
+        this.dbIDForGettingAppointments() +
+        "/" +
+        this.appointmentIDForUpdate()
+    );
+  };
+  this.changeAppointmentInDB = async function() {
+    axios.put(
+      "/patients/appointments/" +
+        this.dbIDForGettingAppointments() +
+        "/" +
+        this.appointmentIDForUpdate(),
+      {
+        startTime: this.startTimeForUpdate(),
+        endTime: this.endTimeForUpdate(),
+        description: this.descriptionForUpdate(),
+        feePaid: this.paymentStatusForUpdate(),
+        cost: this.costForUpdate()
+      }
+    );
   };
 }
 
