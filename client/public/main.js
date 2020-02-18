@@ -44,6 +44,8 @@ function AppViewModel() {
     this.allData(response.data);
   };
 
+  const getDataForAllPatients = this.getDataForAllPatients.bind(this);
+
   this.addPatientToDB = async function() {
     axios
       .post("/patients/create", {
@@ -68,16 +70,22 @@ function AppViewModel() {
   };
 
   this.changePatientInDB = async function() {
-    axios.put("/patients/" + this.dbIDForUpdate(), {
-      petName: this.petNameForUpdate(),
-      petType: this.petTypeForUpdate(),
-      ownerName: this.ownerNameForUpdate(),
-      ownerPhoneNumber: this.ownerPhoneNumberForUpdate()
-    });
+    axios
+      .put("/patients/" + this.dbIDForUpdate(), {
+        petName: this.petNameForUpdate(),
+        petType: this.petTypeForUpdate(),
+        ownerName: this.ownerNameForUpdate(),
+        ownerPhoneNumber: this.ownerPhoneNumberForUpdate()
+      })
+      .then(function() {
+        getDataForAllPatients();
+      });
   };
 
   this.deletePatientFromDB = async function() {
-    axios.delete("/patients/" + this.dbIDForUpdate());
+    axios.delete("/patients/" + this.dbIDForUpdate()).then(function() {
+      getDataForAllPatients();
+    });
   };
 
   this.addAppointmentToPatient = async function() {
@@ -97,6 +105,10 @@ function AppViewModel() {
     this.specificPatientAppointments(response.data);
   };
 
+  const getAppointmentDataForPatient = this.getAppointmentDataForPatient.bind(
+    this
+  );
+
   this.findAppointment = async function() {
     var result = this.specificPatientAppointments().find(appointment => {
       return appointment._id == this.appointmentIDForUpdate();
@@ -109,28 +121,36 @@ function AppViewModel() {
   };
 
   this.deleteAppointmentFromDB = async function() {
-    axios.delete(
-      "/patients/appointments/" +
-        this.dbIDForGettingAppointments() +
-        "/" +
-        this.appointmentIDForUpdate()
-    );
+    axios
+      .delete(
+        "/patients/appointments/" +
+          this.dbIDForGettingAppointments() +
+          "/" +
+          this.appointmentIDForUpdate()
+      )
+      .then(function() {
+        getAppointmentDataForPatient();
+      });
   };
 
   this.changeAppointmentInDB = async function() {
-    axios.put(
-      "/patients/appointments/" +
-        this.dbIDForGettingAppointments() +
-        "/" +
-        this.appointmentIDForUpdate(),
-      {
-        startTime: this.startTimeForUpdate(),
-        endTime: this.endTimeForUpdate(),
-        description: this.descriptionForUpdate(),
-        feePaid: this.paymentStatusForUpdate(),
-        cost: this.costForUpdate()
-      }
-    );
+    axios
+      .put(
+        "/patients/appointments/" +
+          this.dbIDForGettingAppointments() +
+          "/" +
+          this.appointmentIDForUpdate(),
+        {
+          startTime: this.startTimeForUpdate(),
+          endTime: this.endTimeForUpdate(),
+          description: this.descriptionForUpdate(),
+          feePaid: this.paymentStatusForUpdate(),
+          cost: this.costForUpdate()
+        }
+      )
+      .then(function() {
+        getAppointmentDataForPatient();
+      });
   };
 
   this.findAppointmentByDate = async function() {
