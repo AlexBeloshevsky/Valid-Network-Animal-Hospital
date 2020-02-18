@@ -79,9 +79,7 @@
         Owner Phone Number:
         <input data-bind="value: ownerPhoneNumberForUpdate" />
       </p>
-      <button
-        data-bind="click: function() { changePatientInDB(); getDataForAllPatients() }"
-      >
+      <button data-bind="click: changePatientInDB">
         perform a PUT request - change a patient in the database
       </button>
     </section>
@@ -111,7 +109,7 @@
           data-bind="value: descriptionForScheduling"
         />
       </p>
-      <button data-bind="click: function() { addAppointmentToPatient() }">
+      <button data-bind="click: addAppointmentToPatient">
         perform a POST request - add an appointment to a patient
       </button>
     </section>
@@ -164,9 +162,7 @@
       <button data-bind="click: findAppointment">
         Find appointment data
       </button>
-      <button
-        data-bind="click: function() { deleteAppointmentFromDB(); getAppointmentDataForPatient() }"
-      >
+      <button data-bind="click: deleteAppointmentFromDB">
         perform a DELETE request - delete an appointment from the database
       </button>
       <p>Start Time: <input data-bind="value: startTimeForUpdate" /></p>
@@ -174,9 +170,7 @@
       <p>Description: <input data-bind="value: descriptionForUpdate" /></p>
       <p>Already Paid? <input data-bind="value: paymentStatusForUpdate" /></p>
       <p>Cost <input data-bind="value: costForUpdate" /></p>
-      <button
-        data-bind="click: function() { changeAppointmentInDB(); getAppointmentDataForPatient() }"
-      >
+      <button data-bind="click: changeAppointmentInDB">
         perform a PUT request - change an appointment in the database
       </button>
     </section>
