@@ -69,9 +69,7 @@
       <button data-bind="click: findPatient">
         Find patient data
       </button>
-      <button
-        data-bind="click: function() { deletePatientFromDB(); getDataForAllPatients() }"
-      >
+      <button data-bind="click: deletePatientFromDB">
         perform a DELETE request - delete a patient from the database
       </button>
       <p>Pet Name: <input data-bind="value: petNameForUpdate" /></p>

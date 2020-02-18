@@ -77,7 +77,9 @@ function AppViewModel() {
   };
 
   this.deletePatientFromDB = async function() {
-    axios.delete("/patients/" + this.dbIDForUpdate());
+    axios.delete("/patients/" + this.dbIDForUpdate()).then(function() {
+      this.getDataForAllPatients();
+    });
   };
 
   this.addAppointmentToPatient = async function() {
